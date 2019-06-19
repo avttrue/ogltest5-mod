@@ -4,7 +4,7 @@
 
 QT       += core gui widgets
 
-TARGET = ogltest5
+TARGET = ogltest5-mod
 TEMPLATE = app
 
 DEFINES += QT_DEPRECATED_WARNINGS

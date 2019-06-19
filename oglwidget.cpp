@@ -11,18 +11,19 @@
 OGLWidget::OGLWidget(QWidget *parent)
     : QOpenGLWidget(parent)
 {
-    m_MainGroup = new GroupObjects();
+    m_GlobalGroup = new GroupObjects();
     m_Eye = new Eye;
     m_Eye->translate(QVector3D(0.0f, 0.0f, -5.0f));
 }
 
 OGLWidget::~OGLWidget()
 {
+    makeCurrent(); // убирает варнинг "QOpenGLTexturePrivate::destroy() called without a current context"
     for(auto o: m_Objects) delete o;
     for(auto o: m_Groups) delete o;
     delete m_Eye;
     delete m_SkyBox;
-    delete m_MainGroup;
+    delete m_GlobalGroup;
 }
 
 void OGLWidget::initializeGL()
@@ -84,7 +85,7 @@ void OGLWidget::initializeGL()
     m_Groups.last()->add(m_Groups.at(0));
     m_Groups.last()->add(m_Groups.at(1));
     m_Groups.last()->add(m_Groups.at(2));
-    m_MainGroup->add(m_Groups.last());
+    m_GlobalGroup->add(m_Groups.last());
 
     m_SkyBox = new SkyBox(100.0, QImage(":/skybox1.jpg"));
 
@@ -113,7 +114,7 @@ void OGLWidget::paintGL()
     m_Program.setUniformValue("u_lightPosition", QVector4D(0.0f, 0.0f, 0.0f, 1.0f));
     m_Program.setUniformValue("u_lightPower", 1.0f);
     m_Eye->draw(&m_Program);
-    m_MainGroup->draw(&m_Program, context()->functions());
+    m_GlobalGroup->draw(&m_Program, context()->functions());
     m_Program.release();
 }
 

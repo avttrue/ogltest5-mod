@@ -43,7 +43,7 @@ private:
     QQuaternion m_Rotation;
     QVector<Object*> m_Objects;
     QVector<GroupObjects*> m_Groups;
-    GroupObjects* m_MainGroup;
+    GroupObjects* m_GlobalGroup;
 
     Eye* m_Eye;
     SkyBox* m_SkyBox;
